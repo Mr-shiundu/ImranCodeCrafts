@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <title>My Simple PWA</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My PWA!</h1>
+    </header>
+    <main>
+        <p>This is a simple Progressive Web App example.</p>
+        <button id="notifyBtn">Notify Me</button>
+    </main>
+    <script>
+        // Check for service worker support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+
+        // Notification functionality
+        document.getElementById('notifyBtn').addEventListener('click', () => {
+            if (Notification.permission === 'granted') {
+                new Notification('Hello! You clicked the button!');
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification('Thanks for allowing notifications!');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
